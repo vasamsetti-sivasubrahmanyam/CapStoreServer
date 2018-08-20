@@ -16,16 +16,24 @@ public class RefundMoneyImpl implements RefundMoney{
 	public String refundDisplay(int id) {
 		OrderDetails o= repo.refundDisplay(id);
 		
-		if(o.getStatus().equalsIgnoreCase("RETURNED"))	{
-			o.setStatus("REFUNDED");
-			repo.save(o);
-			return "Refund Successful";
-		}	
-		else if(o.getStatus().equalsIgnoreCase("REFUNDED")) {
-			return "Refund done Already";
+		
+		String status=o.getStatus().substring(0,8);
+		
+		
+		
+		 if(o.getStatus().length()>9)
+		{
+			return "Refund Successful for partial order with "+o.getStatus();
 		}
+		 
+		 else if(status.equalsIgnoreCase("RETURNED"))	{
+				
+				return "Refund Successful for whole order";
+				
+			}	
+		
 		else if(o.getStatus().equalsIgnoreCase("Delivered")) {
-			return "Delivered Successfully";
+			return "Order Delivered Successfully, But NotReturned yet";
 		}
 			
 		else return "Sorry,Product is not Delivered. You are not Eligible for Refund";
